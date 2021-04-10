@@ -32,7 +32,7 @@ export default {
   Mutation: {
     registerUser: async (parent, args) => {
       try {
-        const hash = await bcrypt.hash(args.password, 10);
+        const hash = await bcrypt.hash(args.password, 12);
         const userWithHash = {
           ...args,
           password: hash,

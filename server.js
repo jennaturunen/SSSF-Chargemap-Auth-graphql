@@ -5,6 +5,10 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectMongo from './db/db.js';
 import { checkAuth } from './passport/authenticate.js';
+import localhost from './sec/localhost.js';
+import production from './sec/production.js';
+import helmet from 'helmet';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -32,14 +36,38 @@ dotenv.config();
     });
 
     const app = express();
+    app.use(
+      helmet({
+        contentSecurityPolicy: false,
+        ieNoOpen: false,
+      })
+    );
+
+    // Enable cors for all requests
+    //app.use(cors());
+
+    //  Enable CORS for POST on path /cors_enabled
+    // app.post('/cors_enabled', cors(), (req, res, next) => {
+    //   res.json({ msg: 'This is CORS-enabled for a Single Route' });
+    // });
 
     server.applyMiddleware({ app });
 
-    app.listen({ port: 3000 }, () =>
-      console.log(
-        `🚀 Server ready at http://localhost:3000${server.graphqlPath}`
-      )
-    );
+    process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+    if (process.env.NODE_ENV === 'production') {
+      production(app, 3000);
+    } else {
+      localhost(app, 8000, 3000);
+    }
+    app.get('/', (req, res) => {
+      res.send('Hello Secure World!');
+    });
+
+    // app.listen({ port: 3000 }, () =>
+    //   console.log(
+    //     `🚀 Server ready at http://localhost:3000${server.graphqlPath}`
+    //   )
+    // );
   } catch (e) {
     console.log('server error: ' + e.message);
   }
