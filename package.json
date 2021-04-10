@@ -1,0 +1,33 @@
+{
+  "name": "sssf-chargemap-auth-graphql",
+  "version": "1.0.0",
+  "description": "Server-side scripting frameworks course week 4 authentication assingments",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jennaturunen/SSSF-Chargemap-Auth-graphql.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jennaturunen/SSSF-Chargemap-Auth-graphql/issues"
+  },
+  "homepage": "https://github.com/jennaturunen/SSSF-Chargemap-Auth-graphql#readme",
+  "type": "module",
+  "dependencies": {
+    "apollo-server-express": "^2.22.2",
+    "bcrypt": "^5.0.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "graphql": "^15.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.3",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
+  }
+}
