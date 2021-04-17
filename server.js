@@ -5,8 +5,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectMongo from './db/db.js';
 import { checkAuth } from './passport/authenticate.js';
-import localhost from './sec/localhost.js';
-import production from './sec/production.js';
 import helmet from 'helmet';
 import cors from 'cors';
 
@@ -39,7 +37,7 @@ dotenv.config();
     app.use(
       helmet({
         contentSecurityPolicy: false,
-        ieNoOpen: false,
+        //ieNoOpen: false,
       })
     );
 
@@ -51,17 +49,22 @@ dotenv.config();
     //   res.json({ msg: 'This is CORS-enabled for a Single Route' });
     // });
 
-    server.applyMiddleware({ app });
+    server.applyMiddleware({ app, path: '/graphql' });
 
     process.env.NODE_ENV = process.env.NODE_ENV || 'development';
     if (process.env.NODE_ENV === 'production') {
+      console.log('prduction');
+      const { default: production } = await import('./sec/production.js');
       production(app, 3000);
     } else {
+      console.log('localhost');
+      const { default: localhost } = await import('./sec/localhost.js');
       localhost(app, 8000, 3000);
     }
-    app.get('/', (req, res) => {
-      res.send('Hello Secure World!');
-    });
+
+    // app.get('/', (req, res) => {
+    //   res.send('Hello Secure World!');
+    // });
 
     // app.listen({ port: 3000 }, () =>
     //   console.log(
